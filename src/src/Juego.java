@@ -1,29 +1,35 @@
 package src;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class Juego extends JPanel {
 	
-	static int ANCHO = 1280;
-	static int ALTO = 600;
-
+	private JFrame ventana;
+	protected static int ANCHO = 1280;
+	protected static int ALTO = 600;
+	
+	private boolean juegoTerminado;
+	private int puntaje;
 	private Dino dino;
 	private Obstaculo obstaculo;
 	private Rectangle suelo;
 	private Fondo fondo;
 	
 	public Juego() {
-		JFrame ventana = new JFrame("The Dino Game");
+		iniciarVentana();
+		inicializarVariables();
+	}
+	
+	private void iniciarVentana() {
+		ventana = new JFrame("The Dino Game");
 		ventana.setSize(ANCHO, ALTO);
 		ventana.setLocationRelativeTo(null);
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,22 +50,32 @@ public class Juego extends JPanel {
 			
 		};
 		ventana.addKeyListener(teclas);
+	}
+	
+	private void inicializarVariables() {
+		juegoTerminado = false;
+		puntaje = 0;
 		
 		dino = new Dino(ANCHO - 1180, ALTO - 200, ANCHO - 1180, ALTO - 500);
-		
-		obstaculo = new Obstaculo(ANCHO - 980, ALTO - 200, ANCHO - 1200, ALTO - 500);
-		
+		obstaculo = new Obstaculo(ANCHO, ALTO - 200, ANCHO - 1220, ALTO - 500);
 		suelo = new Rectangle(-1, ALTO - 100, ANCHO, ALTO - 500);
-		
 		fondo = new Fondo(0, 0, ANCHO, ALTO);
 	}
 	
 	public void actualizar() {
 		this.repaint();
 		
+		puntaje++;
+		
 		dino.actualizar(suelo);
 		dino.saltar();
 		dino.caer(suelo);
+		
+		obstaculo.mover();
+		
+		if(dino.choco(obstaculo)) {
+			juegoTerminado = true;
+		}
 	}
 	
 	@Override
@@ -75,19 +91,24 @@ public class Juego extends JPanel {
 		}
 		
 		if(suelo != null) {
-			g.setColor(Color.DARK_GRAY);
+			g.setColor(Color.BLACK);
 			g.drawRect(suelo.x, suelo.y, suelo.width, suelo.height);
 		}
 		
 		if(obstaculo != null) {
+			g.setColor(Color.RED);
 			g.drawImage(obstaculo.getImagen(), obstaculo.getX(), obstaculo.getY(), obstaculo.getAncho(), obstaculo.getAlto(), null);
 		}
+		
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("arial", 0, 25));
+		g.drawString("" + puntaje/3, ANCHO - 100, ALTO - 575);
 	}
 	
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 		
-		while(true) {
+		while(!juego.juegoTerminado) {
 			juego.actualizar();
 			try {
 				Thread.sleep(10);

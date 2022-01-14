@@ -9,6 +9,7 @@ public class Obstaculo {
 	private int x, y;
 	private int ancho, alto;
 	private Image imagen;
+	private int velocidad = 9;
 	
 	public Obstaculo(int x, int y, int ancho, int alto) {
 		this.x = x;
@@ -16,6 +17,14 @@ public class Obstaculo {
 		this.ancho = ancho;
 		this.alto = alto;
 		this.imagen = new ImageIcon("obstaculo.png").getImage();
+	}
+	
+	public void mover() {
+		if(x + ancho > 0) {
+			x -= velocidad;
+		} else {
+			x = Juego.ANCHO;
+		}
 	}
 
 	public int getX() {
