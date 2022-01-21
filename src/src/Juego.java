@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -19,7 +22,7 @@ public class Juego extends JPanel {
 	private boolean juegoTerminado;
 	private int puntaje;
 	private Dino dino;
-	private Obstaculo obstaculo;
+	private List<Obstaculo> obstaculos;
 	private Rectangle suelo;
 	private Fondo fondo;
 	
@@ -44,7 +47,9 @@ public class Juego extends JPanel {
 				if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					System.exit(0);
 				} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-					dino.setSaltando(true);
+					if(dino.estaEnElSuelo(suelo)) {
+						dino.setSaltando(true);
+					}
 				}
 			}
 			
@@ -56,10 +61,21 @@ public class Juego extends JPanel {
 		juegoTerminado = false;
 		puntaje = 0;
 		
-		dino = new Dino(ANCHO - 1180, ALTO - 200, ANCHO - 1180, ALTO - 500);
-		obstaculo = new Obstaculo(ANCHO, ALTO - 200, ANCHO - 1220, ALTO - 500);
-		suelo = new Rectangle(-1, ALTO - 100, ANCHO, ALTO - 500);
 		fondo = new Fondo(0, 0, ANCHO, ALTO);
+		
+		dino = new Dino(ANCHO - 1180, ALTO - 200, ANCHO - 1180, ALTO - 500);
+		
+		obstaculos = new ArrayList<>();
+		int random = (int)(Math.random() * (ANCHO - 600) + 500);
+		Obstaculo o1 = new Obstaculo(ANCHO, ALTO - 200, ANCHO - 1220, ALTO - 500);
+		Obstaculo o2 = new Obstaculo(ANCHO + random, ALTO - 150, ANCHO - 1250, ALTO - 550);
+		o2.setXRandom(true);
+		obstaculos.add(o1);
+		obstaculos.add(o2);
+		
+		suelo = new Rectangle(-1, ALTO - 100, ANCHO, ALTO - 500);
+		
+		
 	}
 	
 	public void actualizar() {
@@ -71,10 +87,20 @@ public class Juego extends JPanel {
 		dino.saltar();
 		dino.caer(suelo);
 		
-		obstaculo.mover();
+		for(int i = 0; i < obstaculos.size(); i++) {
+			obstaculos.get(i).mover();
+		}
 		
-		if(dino.choco(obstaculo)) {
-			juegoTerminado = true;
+		for(int i = 0; i < obstaculos.size(); i++) {
+			if(dino.choco(obstaculos.get(i))) {
+				juegoTerminado = true;
+			}
+		}
+		
+		for(int i = 0; i < obstaculos.size(); i++) {
+			if(puntaje/3 % 200 == 0 && puntaje/3 > 0) {
+				obstaculos.get(i).setVelocidad(obstaculos.get(i).getVelocidad() + 1);
+			}
 		}
 	}
 	
@@ -95,11 +121,15 @@ public class Juego extends JPanel {
 			g.drawRect(suelo.x, suelo.y, suelo.width, suelo.height);
 		}
 		
-		if(obstaculo != null) {
-			g.setColor(Color.RED);
-			g.drawImage(obstaculo.getImagen(), obstaculo.getX(), obstaculo.getY(), obstaculo.getAncho(), obstaculo.getAlto(), null);
+		if(obstaculos != null) {
+			for(int i = 0; i < obstaculos.size(); i++) {
+				g.setColor(Color.RED);
+				g.drawImage(obstaculos.get(i).getImagen(), obstaculos.get(i).getX(), obstaculos.get(i).getY(), 
+							obstaculos.get(i).getAncho(), obstaculos.get(i).getAlto(), null);	
+			}
 		}
 		
+		// Mostrar puntaje
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("arial", 0, 25));
 		g.drawString("" + puntaje/3, ANCHO - 100, ALTO - 575);

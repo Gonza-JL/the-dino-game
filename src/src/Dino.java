@@ -11,7 +11,7 @@ public class Dino {
 	private int ancho, alto;
 	private Image imagen;
 	private boolean saltando;
-	private int tiempoEnElAire;
+	private int limiteSalto;
 	private int velocidad = 10;
 	
 	public Dino(int x, int y, int ancho, int alto) {
@@ -19,19 +19,16 @@ public class Dino {
 		this.y = y;
 		this.ancho = ancho;
 		this.alto = alto;
+		this.limiteSalto = y - 200;
 		this.imagen = new ImageIcon("dino.png").getImage();
 	}
 	
 	public void actualizar(Rectangle suelo) {
-		if(!estaEnElSuelo(suelo)) {
-			tiempoEnElAire++;
-		} else {
-			tiempoEnElAire = 0;
-		}
+		
 	}
 	
 	public void saltar() {
-		if(saltando && tiempoEnElAire < 20) {
+		if(saltando && y > limiteSalto) {
 			this.y -= velocidad;
 		} else {
 			saltando = false;
@@ -39,7 +36,7 @@ public class Dino {
 	}
 	
 	public void caer(Rectangle suelo) {
-		if(!estaEnElSuelo(suelo) && !saltando || tiempoEnElAire >= 20) {
+		if(!estaEnElSuelo(suelo) && !saltando || y < limiteSalto) {
 			this.y += velocidad;
 		}
 	}
@@ -87,6 +84,14 @@ public class Dino {
 
 	public int getAlto() {
 		return alto;
+	}
+
+	public int getVelocidad() {
+		return velocidad;
+	}
+
+	public void setVelocidad(int velocidad) {
+		this.velocidad = velocidad;
 	}
 
 }
