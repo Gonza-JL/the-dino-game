@@ -8,14 +8,16 @@ public class Fondo {
 	
 	private int x, y;
 	private int ancho, alto;
-	private Image imagen;
+	private Image fondo;
+	private Image nube;
 	
 	public Fondo(int x, int y, int ancho, int alto) {
 		this.x = x;
 		this.y = y;
 		this.ancho = ancho;
 		this.alto = alto;
-		this.imagen = new ImageIcon("fondo.png").getImage();
+		this.fondo = new ImageIcon("fondo.png").getImage();
+		this.nube = new ImageIcon("nube.png").getImage();
 	}
 
 	public int getX() {
@@ -35,7 +37,11 @@ public class Fondo {
 	}
 
 	public Image getImagen() {
-		return imagen;
+		return fondo;
+	}
+	
+	public Image getNube() {
+		return nube;
 	}
 
 }

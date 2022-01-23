@@ -21,12 +21,12 @@ public class Obstaculo {
 	}
 	
 	public void mover() {
-		int random = (int)(Math.random() * (Juego.ANCHO - 600) + Juego.ANCHO + 400);
+		int random = (int)(Math.random() * 2);
 		if(x + ancho > 0) {
 			x -= velocidad;
 		} else {
-			if(xRandom) {
-				x = random;
+			if(xRandom && random == 0) {
+				x += Juego.ANCHO + 200;
 			} else {
 				x += Juego.ANCHO;
 			}

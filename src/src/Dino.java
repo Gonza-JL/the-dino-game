@@ -20,11 +20,19 @@ public class Dino {
 		this.ancho = ancho;
 		this.alto = alto;
 		this.limiteSalto = y - 200;
-		this.imagen = new ImageIcon("dino.png").getImage();
+		this.imagen = new ImageIcon("dino1.png").getImage();
 	}
 	
-	public void actualizar(Rectangle suelo) {
+	public void actualizar(Rectangle suelo, int n) {
+		if(n % 2 == 0) {
+			imagen = new ImageIcon("dino1.png").getImage();
+		} else {
+			imagen = new ImageIcon("dino2.png").getImage();
+		}
 		
+		if(!estaEnElSuelo(suelo)) {
+			imagen = new ImageIcon("dino3.png").getImage();
+		}
 	}
 	
 	public void saltar() {
@@ -51,7 +59,7 @@ public class Dino {
 	public boolean choco(Obstaculo obstaculo) {
 		if(x + ancho - 20 >= obstaculo.getX() && x + ancho - 20 <= obstaculo.getX() + obstaculo.getAncho() &&
 				y + alto/3 >= obstaculo.getY() + 10 && y + alto/3 <= obstaculo.getY() + obstaculo.getAlto() ||
-				x + ancho/2 >= obstaculo.getX() && x + ancho/2 <= obstaculo.getX() + obstaculo.getX() &&
+				x + ancho - 20 >= obstaculo.getX() + 30 && x + ancho - 20 <= obstaculo.getX() + obstaculo.getX() &&
 				y + alto - 20 >= obstaculo.getY() && y + alto - 20 <= obstaculo.getY() + obstaculo.getAlto()) {
 			return true;
 		}

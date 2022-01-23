@@ -8,7 +8,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -66,16 +65,13 @@ public class Juego extends JPanel {
 		dino = new Dino(ANCHO - 1180, ALTO - 200, ANCHO - 1180, ALTO - 500);
 		
 		obstaculos = new ArrayList<>();
-		int random = (int)(Math.random() * (ANCHO - 600) + 500);
 		Obstaculo o1 = new Obstaculo(ANCHO, ALTO - 200, ANCHO - 1220, ALTO - 500);
-		Obstaculo o2 = new Obstaculo(ANCHO + random, ALTO - 150, ANCHO - 1250, ALTO - 550);
+		Obstaculo o2 = new Obstaculo(ANCHO + 100, ALTO - 150, ANCHO - 1250, ALTO - 550);
 		o2.setXRandom(true);
 		obstaculos.add(o1);
 		obstaculos.add(o2);
 		
 		suelo = new Rectangle(-1, ALTO - 100, ANCHO, ALTO - 500);
-		
-		
 	}
 	
 	public void actualizar() {
@@ -83,7 +79,7 @@ public class Juego extends JPanel {
 		
 		puntaje++;
 		
-		dino.actualizar(suelo);
+		dino.actualizar(suelo, puntaje/10);
 		dino.saltar();
 		dino.caer(suelo);
 		
@@ -98,8 +94,8 @@ public class Juego extends JPanel {
 		}
 		
 		for(int i = 0; i < obstaculos.size(); i++) {
-			if(puntaje/3 % 200 == 0 && puntaje/3 > 0) {
-				obstaculos.get(i).setVelocidad(obstaculos.get(i).getVelocidad() + 1);
+			if(puntaje % 500 == 0 && puntaje/3 > 0) {
+				obstaculos.get(i).setVelocidad(obstaculos.get(1).getVelocidad() + 1);
 			}
 		}
 	}
@@ -110,6 +106,10 @@ public class Juego extends JPanel {
 		
 		if(fondo != null) {
 			g.drawImage(fondo.getImagen(), fondo.getX(), fondo.getY(), fondo.getAncho(), fondo.getAlto(), null);
+			g.drawImage(fondo.getNube(), 100, 100, 125, 50, null);
+			g.drawImage(fondo.getNube(), 500, 80, 80, 25, null);
+			g.drawImage(fondo.getNube(), 800, 200, 100, 40, null);
+			g.drawImage(fondo.getNube(), 1100, 150, 80, 25, null);
 		}
 		
 		if(dino != null) {
@@ -131,8 +131,8 @@ public class Juego extends JPanel {
 		
 		// Mostrar puntaje
 		g.setColor(Color.BLACK);
-		g.setFont(new Font("arial", 0, 25));
-		g.drawString("" + puntaje/3, ANCHO - 100, ALTO - 575);
+		g.setFont(new Font("Pixel Emulator", 0, 25));
+		g.drawString("" + puntaje/3, ANCHO - 110, ALTO - 575);
 	}
 	
 	public static void main(String[] args) {
