@@ -89,6 +89,7 @@ public class Juego extends JPanel {
 		
 		for(int i = 0; i < obstaculos.size(); i++) {
 			if(dino.choco(obstaculos.get(i))) {
+				dino.perder();
 				juegoTerminado = true;
 			}
 		}
