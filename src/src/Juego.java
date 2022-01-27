@@ -17,6 +17,7 @@ public class Juego extends JPanel {
 	
 	private boolean juegoTerminado;
 	private int puntaje;
+	private Integer record;
 	private Dino dino;
 	private Mapa mapa;
 	
@@ -44,6 +45,9 @@ public class Juego extends JPanel {
 					if(dino.estaEnElSuelo(mapa.getSuelo())) {
 						dino.setSaltando(true);
 					}
+					if(juegoTerminado) {
+						inicializarVariables();
+					}
 				}
 			}
 			
@@ -63,12 +67,12 @@ public class Juego extends JPanel {
 		
 		if(!juegoTerminado) {
 			puntaje++;
-			
 			mapa.actualizar();
 			dino.actualizar(mapa.getSuelo(), puntaje/10);
 			dino.saltar();
 			dino.caer(mapa.getSuelo());
 			
+			// Simular movimiento del dino
 			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
 				mapa.getObstaculos().get(i).mover();
 			}
@@ -87,6 +91,11 @@ public class Juego extends JPanel {
 					mapa.getObstaculos().get(i).setVelocidad(mapa.getObstaculos().get(1).getVelocidad() + 1);
 				}
 			}
+		} else {
+			// Actualizar record
+			if(record == null || puntaje/3 >= record) {
+				record = puntaje/3;
+			}
 		}
 	}
 	
@@ -97,15 +106,19 @@ public class Juego extends JPanel {
 		if(mapa != null) {
 			mapa.dibujar(g);
 		}
-			
 		if(dino != null) {
 			dino.dibujar(g);
 		}
-		
-		// Mostrar puntaje
+		mostrarPuntaje(g);
+	}
+	
+	private void mostrarPuntaje(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Pixel Emulator", 0, 25));
-		g.drawString("" + puntaje/3, ANCHO - 110, ALTO - 575);
+		g.drawString("Puntaje: " + puntaje/3, ANCHO - 200, ALTO - 575);
+		if(record != null) {
+			g.drawString("Record: " + record, ANCHO - 400, ALTO - 575);
+		}
 	}
 	
 	public static void main(String[] args) {

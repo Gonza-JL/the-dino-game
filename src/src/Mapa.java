@@ -26,17 +26,21 @@ public class Mapa {
 		this.y = y;
 		this.ancho = ancho;
 		this.alto = alto;
-		this.xNubes = new ArrayList<>();
-		this.xNubes.add(100);
-		this.xNubes.add(500);
-		this.xNubes.add(800);
-		this.xNubes.add(1100);
-		this.fondo = new ImageIcon("fondo.png").getImage();
-		this.nube = new ImageIcon("nube.png").getImage();
-		this.imagenSuelo = new ImageIcon("suelo.png").getImage();
+		
+		xNubes = new ArrayList<>();
+		xNubes.add(100);
+		xNubes.add(500);
+		xNubes.add(800);
+		xNubes.add(1100);
+		
+		fondo = new ImageIcon("fondo.png").getImage();
+		nube = new ImageIcon("nube.png").getImage();
+		imagenSuelo = new ImageIcon("suelo.png").getImage();
+		
 		this.suelo = new Rectangle(-1, alto - 100, ancho, alto - 500);
 		this.xSuelo = 0;
-		this.obstaculos = new ArrayList<>();
+		
+		obstaculos = new ArrayList<>();
 		Obstaculo o1 = new Obstaculo(ancho, alto - 200, ancho - 1220, alto - 500);
 		Obstaculo o2 = new Obstaculo(ancho + 100, alto - 150, ancho - 1250, alto - 550);
 		o2.setXRandom(true);
