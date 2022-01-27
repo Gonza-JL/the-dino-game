@@ -1,6 +1,9 @@
 package src;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
+
 import javax.swing.ImageIcon;
 
 public class Obstaculo {
@@ -18,6 +21,11 @@ public class Obstaculo {
 		this.alto = alto;
 		this.xRandom = false;
 		this.imagen = new ImageIcon("obstaculo.png").getImage();
+	}
+	
+	public void dibujar(Graphics g) {
+		g.setColor(Color.RED);
+		g.drawImage(getImagen(), x, y, ancho, alto, null);	
 	}
 	
 	public void mover() {

@@ -1,5 +1,6 @@
 package src;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -33,6 +34,10 @@ public class Dino {
 		if(!estaEnElSuelo(suelo)) {
 			imagen = new ImageIcon("Dino saltando.png").getImage();
 		}
+	}
+	
+	public void dibujar(Graphics g) {
+		g.drawImage(imagen, x, y, ancho, alto, null);
 	}
 	
 	public void saltar() {

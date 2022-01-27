@@ -3,11 +3,8 @@ package src;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -21,9 +18,7 @@ public class Juego extends JPanel {
 	private boolean juegoTerminado;
 	private int puntaje;
 	private Dino dino;
-	private List<Obstaculo> obstaculos;
-	private Rectangle suelo;
-	private Fondo fondo;
+	private Mapa mapa;
 	
 	public Juego() {
 		iniciarVentana();
@@ -46,7 +41,7 @@ public class Juego extends JPanel {
 				if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					System.exit(0);
 				} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-					if(dino.estaEnElSuelo(suelo)) {
+					if(dino.estaEnElSuelo(mapa.getSuelo())) {
 						dino.setSaltando(true);
 					}
 				}
@@ -59,44 +54,38 @@ public class Juego extends JPanel {
 	private void inicializarVariables() {
 		juegoTerminado = false;
 		puntaje = 0;
-		
-		fondo = new Fondo(0, 0, ANCHO, ALTO);
-		
+		mapa = new Mapa(0, 0, ANCHO, ALTO);
 		dino = new Dino(ANCHO - 1180, ALTO - 200, ANCHO - 1180, ALTO - 500);
-		
-		obstaculos = new ArrayList<>();
-		Obstaculo o1 = new Obstaculo(ANCHO, ALTO - 200, ANCHO - 1220, ALTO - 500);
-		Obstaculo o2 = new Obstaculo(ANCHO + 100, ALTO - 150, ANCHO - 1250, ALTO - 550);
-		o2.setXRandom(true);
-		obstaculos.add(o1);
-		obstaculos.add(o2);
-		
-		suelo = new Rectangle(-1, ALTO - 100, ANCHO, ALTO - 500);
 	}
 	
 	public void actualizar() {
 		this.repaint();
 		
-		puntaje++;
-		
-		dino.actualizar(suelo, puntaje/10);
-		dino.saltar();
-		dino.caer(suelo);
-		
-		for(int i = 0; i < obstaculos.size(); i++) {
-			obstaculos.get(i).mover();
-		}
-		
-		for(int i = 0; i < obstaculos.size(); i++) {
-			if(dino.choco(obstaculos.get(i))) {
-				dino.perder();
-				juegoTerminado = true;
+		if(!juegoTerminado) {
+			puntaje++;
+			
+			mapa.actualizar();
+			dino.actualizar(mapa.getSuelo(), puntaje/10);
+			dino.saltar();
+			dino.caer(mapa.getSuelo());
+			
+			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
+				mapa.getObstaculos().get(i).mover();
 			}
-		}
-		
-		for(int i = 0; i < obstaculos.size(); i++) {
-			if(puntaje % 500 == 0 && puntaje/3 > 0) {
-				obstaculos.get(i).setVelocidad(obstaculos.get(1).getVelocidad() + 1);
+			
+			// Verificar si el dino chocó
+			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
+				if(dino.choco(mapa.getObstaculos().get(i))) {
+					dino.perder();
+					juegoTerminado = true;
+				}
+			}
+			
+			// Aumentar velocidad del juego
+			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
+				if(puntaje % 500 == 0 && puntaje/3 > 0) {
+					mapa.getObstaculos().get(i).setVelocidad(mapa.getObstaculos().get(1).getVelocidad() + 1);
+				}
 			}
 		}
 	}
@@ -105,29 +94,12 @@ public class Juego extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		if(fondo != null) {
-			g.drawImage(fondo.getImagen(), fondo.getX(), fondo.getY(), fondo.getAncho(), fondo.getAlto(), null);
-			g.drawImage(fondo.getNube(), 100, 100, 125, 50, null);
-			g.drawImage(fondo.getNube(), 500, 80, 80, 25, null);
-			g.drawImage(fondo.getNube(), 800, 200, 100, 40, null);
-			g.drawImage(fondo.getNube(), 1100, 150, 80, 25, null);
+		if(mapa != null) {
+			mapa.dibujar(g);
 		}
-		
+			
 		if(dino != null) {
-			g.drawImage(dino.getImagen(), dino.getX(), dino.getY(), dino.getAncho(), dino.getAlto(), null);
-		}
-		
-		if(suelo != null) {
-			g.setColor(Color.BLACK);
-			g.drawRect(suelo.x, suelo.y, suelo.width, suelo.height);
-		}
-		
-		if(obstaculos != null) {
-			for(int i = 0; i < obstaculos.size(); i++) {
-				g.setColor(Color.RED);
-				g.drawImage(obstaculos.get(i).getImagen(), obstaculos.get(i).getX(), obstaculos.get(i).getY(), 
-							obstaculos.get(i).getAncho(), obstaculos.get(i).getAlto(), null);	
-			}
+			dino.dibujar(g);
 		}
 		
 		// Mostrar puntaje
@@ -139,7 +111,7 @@ public class Juego extends JPanel {
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 		
-		while(!juego.juegoTerminado) {
+		while(true) {
 			juego.actualizar();
 			try {
 				Thread.sleep(10);
