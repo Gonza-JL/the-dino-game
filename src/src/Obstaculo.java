@@ -11,7 +11,6 @@ public class Obstaculo {
 	private int x, y;
 	private int ancho, alto;
 	private Image imagen;
-	private int velocidad = 9;
 	private boolean xRandom;
 	
 	public Obstaculo(int x, int y, int ancho, int alto) {
@@ -31,7 +30,7 @@ public class Obstaculo {
 	public void mover() {
 		int random = (int)(Math.random() * 2);
 		if(x + ancho > 0) {
-			x -= velocidad;
+			x -= Juego.velocidadCam;
 		} else {
 			if(xRandom && random == 0) {
 				x += Juego.ANCHO + 200;
@@ -59,14 +58,6 @@ public class Obstaculo {
 
 	public Image getImagen() {
 		return imagen;
-	}
-
-	public int getVelocidad() {
-		return velocidad;
-	}
-	
-	public void setVelocidad(int velocidad) {
-		this.velocidad = velocidad;
 	}
 	
 	public void setXRandom(boolean xRandom) {

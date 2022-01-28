@@ -17,6 +17,7 @@ public class Mapa {
 	private Image nube;
 	private List<Integer> xNubes;
 	private List<Obstaculo> obstaculos;
+	private List<Rectangle> lineasSuelo;
 	private Rectangle suelo;
 	
 	public Mapa(int x, int y, int ancho, int alto) {
@@ -34,6 +35,11 @@ public class Mapa {
 		fondo = new ImageIcon("fondo.png").getImage();
 		nube = new ImageIcon("nube.png").getImage();
 		
+		lineasSuelo = new ArrayList<>();
+		for(int i = 0; i < 1300; i += 73) {
+			int random = (int)(Math.random() * 40 + 50);
+			lineasSuelo.add(new Rectangle(i, alto - random, 10, 1));
+		}
 		suelo = new Rectangle(-1, alto - 100, ancho, alto - 500);
 		
 		obstaculos = new ArrayList<>();
@@ -49,18 +55,20 @@ public class Mapa {
 		for(int i = 0; i < obstaculos.size(); i++) {
 			obstaculos.get(i).mover();
 		}
-		// Simular el aumento de la velocidad del dino
-		for(int i = 0; i < obstaculos.size(); i++) {
-			if(puntaje % 500 == 0 && puntaje/3 > 0) {
-				obstaculos.get(i).setVelocidad(obstaculos.get(1).getVelocidad() + 1);
-			}
-		}
 		// Mover nubes
 		for(int i = 0; i < xNubes.size(); i++) {
 			if(xNubes.get(i) + 200 > 0) {
-				xNubes.set(i, xNubes.get(i) - 5);
+				xNubes.set(i, xNubes.get(i) - Juego.velocidadCam);
 			} else {
 				xNubes.set(i, ancho);
+			}
+		}
+		// Mover lineas del suelo
+		for(int i = 0; i < lineasSuelo.size(); i++) {
+			if(lineasSuelo.get(i).x > 0) {
+				lineasSuelo.get(i).x -= Juego.velocidadCam;
+			} else {
+				lineasSuelo.get(i).x = ancho;
 			}
 		}
 	}
@@ -76,6 +84,9 @@ public class Mapa {
 	
 	private void dibujarSuelo(Graphics g) {
 		g.setColor(Color.BLACK);
+		for(int i = 0; i < lineasSuelo.size(); i++) {
+			g.drawRect(lineasSuelo.get(i).x, lineasSuelo.get(i).y, lineasSuelo.get(i).width, lineasSuelo.get(i).height);
+		}
 		g.drawRect(suelo.x, suelo.y, suelo.width, suelo.height);
 	}
 	

@@ -17,6 +17,7 @@ public class Juego extends JPanel {
 	private JFrame ventana;
 	protected static int ANCHO = 1280;
 	protected static int ALTO = 600;
+	protected static int velocidadCam;
 	
 	private boolean juegoTerminado;
 	private int puntaje;
@@ -60,6 +61,7 @@ public class Juego extends JPanel {
 	}
 	
 	private void inicializarVariables() {
+		velocidadCam = 9;
 		juegoTerminado = false;
 		puntaje = 0;
 		reiniciar = new ImageIcon("icono de reiniciar.png").getImage();
@@ -76,6 +78,11 @@ public class Juego extends JPanel {
 			dino.actualizar(mapa.getSuelo(), puntaje/10);
 			dino.saltar();
 			dino.caer(mapa.getSuelo());
+			
+			// Simular el aumento de la velocidad del dino
+			if(puntaje % 500 == 0 && puntaje/3 > 0) {
+				Juego.velocidadCam++;
+			}
 			
 			// Parar el juego si el dino chocó
 			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
