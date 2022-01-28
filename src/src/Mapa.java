@@ -18,8 +18,6 @@ public class Mapa {
 	private List<Integer> xNubes;
 	private List<Obstaculo> obstaculos;
 	private Rectangle suelo;
-	private Image imagenSuelo;
-	private int xSuelo;
 	
 	public Mapa(int x, int y, int ancho, int alto) {
 		this.x = x;
@@ -35,10 +33,8 @@ public class Mapa {
 		
 		fondo = new ImageIcon("fondo.png").getImage();
 		nube = new ImageIcon("nube.png").getImage();
-		imagenSuelo = new ImageIcon("suelo.png").getImage();
 		
-		this.suelo = new Rectangle(-1, alto - 100, ancho, alto - 500);
-		this.xSuelo = 0;
+		suelo = new Rectangle(-1, alto - 100, ancho, alto - 500);
 		
 		obstaculos = new ArrayList<>();
 		Obstaculo o1 = new Obstaculo(ancho, alto - 200, ancho - 1220, alto - 500);
@@ -48,13 +44,18 @@ public class Mapa {
 		obstaculos.add(o2);
 	}
 	
-	public void actualizar() {
-		if(xSuelo == 100) {
-			xSuelo = 0;
-		} else {
-			xSuelo += 5;
+	public void actualizar(int puntaje) {
+		// Simular el movimiento del dino
+		for(int i = 0; i < obstaculos.size(); i++) {
+			obstaculos.get(i).mover();
 		}
-		
+		// Simular el aumento de la velocidad del dino
+		for(int i = 0; i < obstaculos.size(); i++) {
+			if(puntaje % 500 == 0 && puntaje/3 > 0) {
+				obstaculos.get(i).setVelocidad(obstaculos.get(1).getVelocidad() + 1);
+			}
+		}
+		// Mover nubes
 		for(int i = 0; i < xNubes.size(); i++) {
 			if(xNubes.get(i) + 200 > 0) {
 				xNubes.set(i, xNubes.get(i) - 5);
@@ -75,9 +76,6 @@ public class Mapa {
 	
 	private void dibujarSuelo(Graphics g) {
 		g.setColor(Color.BLACK);
-		for(int i = 0; i <= 1300; i += 100) {
-			g.drawImage(imagenSuelo, suelo.x + i - xSuelo, suelo.y, 100, suelo.height, null);
-		}
 		g.drawRect(suelo.x, suelo.y, suelo.width, suelo.height);
 	}
 	

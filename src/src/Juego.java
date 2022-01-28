@@ -3,8 +3,11 @@ package src;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -20,6 +23,7 @@ public class Juego extends JPanel {
 	private Integer record;
 	private Dino dino;
 	private Mapa mapa;
+	private Image reiniciar;
 	
 	public Juego() {
 		iniciarVentana();
@@ -58,6 +62,7 @@ public class Juego extends JPanel {
 	private void inicializarVariables() {
 		juegoTerminado = false;
 		puntaje = 0;
+		reiniciar = new ImageIcon("icono de reiniciar.png").getImage();
 		mapa = new Mapa(0, 0, ANCHO, ALTO);
 		dino = new Dino(ANCHO - 1180, ALTO - 200, ANCHO - 1180, ALTO - 500);
 	}
@@ -67,28 +72,16 @@ public class Juego extends JPanel {
 		
 		if(!juegoTerminado) {
 			puntaje++;
-			mapa.actualizar();
+			mapa.actualizar(puntaje);
 			dino.actualizar(mapa.getSuelo(), puntaje/10);
 			dino.saltar();
 			dino.caer(mapa.getSuelo());
 			
-			// Simular movimiento del dino
-			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
-				mapa.getObstaculos().get(i).mover();
-			}
-			
-			// Verificar si el dino chocó
+			// Parar el juego si el dino chocó
 			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
 				if(dino.choco(mapa.getObstaculos().get(i))) {
 					dino.perder();
 					juegoTerminado = true;
-				}
-			}
-			
-			// Aumentar velocidad del juego
-			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
-				if(puntaje % 500 == 0 && puntaje/3 > 0) {
-					mapa.getObstaculos().get(i).setVelocidad(mapa.getObstaculos().get(1).getVelocidad() + 1);
 				}
 			}
 		} else {
@@ -102,23 +95,30 @@ public class Juego extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		if(mapa != null) {
-			mapa.dibujar(g);
-		}
-		if(dino != null) {
-			dino.dibujar(g);
-		}
+		if(mapa != null) mapa.dibujar(g);
+		if(dino != null) dino.dibujar(g);
+		if(juegoTerminado) mensajeGameOver(g);
 		mostrarPuntaje(g);
 	}
 	
 	private void mostrarPuntaje(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Pixel Emulator", 0, 20));
+		g.drawString("Puntaje: " + puntaje/3, ANCHO - 220, ALTO - 575);
+		if(record != null) {
+			g.setColor(Color.BLACK);
+			g.drawString("Record: " + record, ANCHO - 420, ALTO - 575);
+		}
+	}
+	
+	private void mensajeGameOver(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Pixel Emulator", 0, 25));
-		g.drawString("Puntaje: " + puntaje/3, ANCHO - 200, ALTO - 575);
-		if(record != null) {
-			g.drawString("Record: " + record, ANCHO - 400, ALTO - 575);
-		}
+		g.drawString("Fin del juego", ANCHO/2 - 120, ALTO/3);
+		g.setFont(new Font("Pixel Emulator", 0, 20));
+		g.drawString("Si desea salir del juego presione la tecla ESC", ANCHO/4 - 20, ALTO/3 + 50);
+		g.drawString("O si desea jugar de nuevo presione la tecla ESPACIO", ANCHO/4 - 55, ALTO/3 + 75);
+		g.drawImage(reiniciar, ANCHO/2 - 50, ALTO/2, 100, 100, null);
 	}
 	
 	public static void main(String[] args) {
