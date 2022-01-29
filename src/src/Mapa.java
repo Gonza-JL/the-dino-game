@@ -87,14 +87,14 @@ public class Mapa {
 		for(int i = 0; i < lineasSuelo.size(); i++) {
 			g.drawRect(lineasSuelo.get(i).x, lineasSuelo.get(i).y, lineasSuelo.get(i).width, lineasSuelo.get(i).height);
 		}
-		g.drawRect(suelo.x, suelo.y, suelo.width, suelo.height);
+		g.drawRect(suelo.x, suelo.y, suelo.width, 1);
 	}
 	
 	private void dibujarNubes(Graphics g) {
-		g.drawImage(nube, xNubes.get(0), 150, 125, 50, null);
-		g.drawImage(nube, xNubes.get(1), 80, 80, 25, null);
-		g.drawImage(nube, xNubes.get(2), 200, 100, 40, null);
-		g.drawImage(nube, xNubes.get(3), 150, 80, 25, null);
+		g.drawImage(nube, xNubes.get(0), alto - 450, 125, 50, null);
+		g.drawImage(nube, xNubes.get(1), alto - 520, 80, 25, null);
+		g.drawImage(nube, xNubes.get(2), alto - 400, 100, 40, null);
+		g.drawImage(nube, xNubes.get(3), alto - 450, 80, 25, null);
 	}
 
 	public int getX() {
