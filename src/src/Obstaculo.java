@@ -19,7 +19,7 @@ public class Obstaculo {
 		this.ancho = ancho;
 		this.alto = alto;
 		this.xRandom = false;
-		this.imagen = new ImageIcon("obstaculo.png").getImage();
+		this.imagen = new ImageIcon("data/obstaculo.png").getImage();
 	}
 	
 	public void dibujar(Graphics g) {

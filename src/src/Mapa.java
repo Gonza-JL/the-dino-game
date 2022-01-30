@@ -32,8 +32,8 @@ public class Mapa {
 		xNubes.add(800);
 		xNubes.add(1100);
 		
-		fondo = new ImageIcon("fondo.png").getImage();
-		nube = new ImageIcon("nube.png").getImage();
+		fondo = new ImageIcon("data/fondo.png").getImage();
+		nube = new ImageIcon("data/nube.png").getImage();
 		
 		lineasSuelo = new ArrayList<>();
 		for(int i = 0; i < 1300; i += 73) {

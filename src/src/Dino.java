@@ -21,18 +21,18 @@ public class Dino {
 		this.ancho = ancho;
 		this.alto = alto;
 		this.limiteSalto = y - 200;
-		this.imagen = new ImageIcon("Dino corriendo 1.png").getImage();
+		this.imagen = new ImageIcon("data/Dino corriendo 1.png").getImage();
 	}
 	
 	public void actualizar(Rectangle suelo, int n) {
 		if(n % 2 == 0) {
-			imagen = new ImageIcon("Dino corriendo 1.png").getImage();
+			imagen = new ImageIcon("data/Dino corriendo 1.png").getImage();
 		} else {
-			imagen = new ImageIcon("Dino corriendo 2.png").getImage();
+			imagen = new ImageIcon("data/Dino corriendo 2.png").getImage();
 		}
 		
 		if(!estaEnElSuelo(suelo)) {
-			imagen = new ImageIcon("Dino saltando.png").getImage();
+			imagen = new ImageIcon("data/Dino saltando.png").getImage();
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class Dino {
 	}
 	
 	public void perder() {
-		imagen = new ImageIcon("Dino chocado.png").getImage();
+		imagen = new ImageIcon("data/Dino chocado.png").getImage();
 	}
 
 	public void setSaltando(boolean saltando) {

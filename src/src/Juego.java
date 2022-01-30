@@ -64,7 +64,7 @@ public class Juego extends JPanel {
 		velocidadCam = 9;
 		juegoTerminado = false;
 		puntaje = 0;
-		reiniciar = new ImageIcon("icono de reiniciar.png").getImage();
+		reiniciar = new ImageIcon("data/icono de reiniciar.png").getImage();
 		mapa = new Mapa(0, 0, ANCHO, ALTO);
 		dino = new Dino(ANCHO - 1180, ALTO - 200, ANCHO - 1180, ALTO - 500);
 	}
