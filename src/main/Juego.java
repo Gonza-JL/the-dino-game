@@ -75,7 +75,7 @@ public class Juego extends JPanel {
 		msjReiniciar = new ImageIcon("data/icono de reiniciar.png").getImage();
 		cartel = new ImageIcon("data/cartel de game over.png").getImage();
 		mapa = new Mapa(0, 0, ANCHO, ALTO);
-		dino = new Dino(ANCHO - 1180, ALTO - 200, ANCHO - 1180, ALTO - 500);
+		dino = new Dino(ANCHO - 1180, ALTO - 200, 100, 100);
 	}
 
 	public void actualizar() {

@@ -45,7 +45,7 @@ public class Mapa {
 		obstaculos = new ArrayList<>();
 		Obstaculo o1 = new Obstaculo(ancho, alto - 200, ancho - 1220, alto - 500);
 		Obstaculo o2 = new Obstaculo(ancho + 100, alto - 150, ancho - 1250, alto - 550);
-		o2.setXRandom(true);
+		o2.setTipo(2);
 		obstaculos.add(o1);
 		obstaculos.add(o2);
 	}

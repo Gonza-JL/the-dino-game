@@ -10,21 +10,26 @@ public class Obstaculo {
 	
 	private int x, y;
 	private int ancho, alto;
-	private Image imagen;
-	private boolean xRandom;
+	private Image imagen, imagen2;
+	private int tipo;
 	
 	public Obstaculo(int x, int y, int ancho, int alto) {
 		this.x = x;
 		this.y = y;
 		this.ancho = ancho;
 		this.alto = alto;
-		this.xRandom = false;
+		this.tipo = 1;
 		this.imagen = new ImageIcon("data/obstaculo.png").getImage();
+		this.imagen2 = new ImageIcon("data/obstaculo2.png").getImage();
 	}
 	
 	public void dibujar(Graphics g) {
 		g.setColor(Color.RED);
-		g.drawImage(getImagen(), x, y, ancho, alto, null);	
+		if(tipo == 1) {
+			g.drawImage(imagen, x, y, ancho, alto, null);
+		} else {
+			g.drawImage(imagen2, x, y, ancho, alto, null);
+		}
 	}
 	
 	public void mover() {
@@ -32,7 +37,7 @@ public class Obstaculo {
 		if(x + ancho > 0) {
 			x -= Juego.velocidadCam;
 		} else {
-			if(xRandom && random == 0) {
+			if(tipo != 1 && random == 0) {
 				x += Juego.ANCHO + 200;
 			} else {
 				x += Juego.ANCHO;
@@ -55,13 +60,9 @@ public class Obstaculo {
 	public int getAlto() {
 		return alto;
 	}
-
-	public Image getImagen() {
-		return imagen;
-	}
 	
-	public void setXRandom(boolean xRandom) {
-		this.xRandom = xRandom;
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
 	}
 	
 }
