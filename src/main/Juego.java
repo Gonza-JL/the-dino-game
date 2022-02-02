@@ -32,6 +32,7 @@ public class Juego extends JPanel {
 	private Dino dino;
 	private Mapa mapa;
 	private Image msjReiniciar, cartel;
+	private String sonidoSalto, sonidoDerrota;
 
 	public Juego() {
 		iniciarVentana();
@@ -51,14 +52,14 @@ public class Juego extends JPanel {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					System.exit(0);
-				} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					if (dino.estaEnElSuelo(mapa.getSuelo())) {
-						reproducirSonido("data/sonido de salto.wav");
+				} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+					if(dino.estaEnElSuelo(mapa.getSuelo())) {
+						reproducirSonido(sonidoSalto);
 						dino.setSaltando(true);
 					}
-					if (juegoTerminado) {
+					if(juegoTerminado) {
 						inicializarVariables();
 					}
 				}
@@ -72,6 +73,8 @@ public class Juego extends JPanel {
 		velocidadCam = 9;
 		juegoTerminado = false;
 		puntaje = 0;
+		sonidoSalto = "data/sonido de salto.wav";
+		sonidoDerrota = "data/sonido de derrota.wav";
 		msjReiniciar = new ImageIcon("data/icono de reiniciar.png").getImage();
 		cartel = new ImageIcon("data/cartel de game over.png").getImage();
 		mapa = new Mapa(0, 0, ANCHO, ALTO);
@@ -81,7 +84,7 @@ public class Juego extends JPanel {
 	public void actualizar() {
 		this.repaint();
 
-		if (!juegoTerminado) {
+		if(!juegoTerminado) {
 			puntaje++;
 			mapa.actualizar(puntaje);
 			dino.actualizar(mapa.getSuelo(), puntaje / 10);
@@ -89,21 +92,21 @@ public class Juego extends JPanel {
 			dino.caer(mapa.getSuelo());
 
 			// Simular el aumento de la velocidad del dino
-			if (puntaje % 500 == 0 && puntaje / 3 > 0) {
+			if(puntaje % 500 == 0 && puntaje/3 > 0) {
 				Juego.velocidadCam++;
 			}
 
 			// Parar el juego si el dino chocó
-			for (int i = 0; i < mapa.getObstaculos().size(); i++) {
-				if (dino.choco(mapa.getObstaculos().get(i))) {
-					reproducirSonido("data/sonido de derrota.wav");
+			for(int i = 0; i < mapa.getObstaculos().size(); i++) {
+				if(dino.choco(mapa.getObstaculos().get(i))) {
+					reproducirSonido(sonidoDerrota);
 					dino.perder();
 					juegoTerminado = true;
 				}
 			}
 		} else {
 			// Actualizar record
-			if (record == null || puntaje / 3 >= record) {
+			if(record == null || puntaje / 3 >= record) {
 				record = puntaje / 3;
 			}
 		}
@@ -112,11 +115,11 @@ public class Juego extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if (mapa != null)
+		if(mapa != null)
 			mapa.dibujar(g);
-		if (dino != null)
+		if(dino != null)
 			dino.dibujar(g);
-		if (juegoTerminado)
+		if(juegoTerminado)
 			mensajeGameOver(g);
 		mostrarPuntaje(g);
 	}
@@ -125,7 +128,7 @@ public class Juego extends JPanel {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Pixel Emulator", 0, 20));
 		g.drawString("Puntaje: " + puntaje / 3, ANCHO - 220, ALTO - 575);
-		if (record != null) {
+		if(record != null) {
 			g.setColor(Color.BLACK);
 			g.drawString("Record: " + record, ANCHO - 420, ALTO - 575);
 		}
@@ -156,7 +159,7 @@ public class Juego extends JPanel {
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 
-		while (true) {
+		while(true) {
 			juego.actualizar();
 			try {
 				Thread.sleep(10);
