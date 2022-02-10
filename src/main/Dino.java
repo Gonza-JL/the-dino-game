@@ -55,7 +55,7 @@ public class Dino {
 	}
 	
 	public boolean estaEnElSuelo(Rectangle suelo) {
-		if(this.y + alto/2 == suelo.y - suelo.height/2) {
+		if(this.y + alto/2 >= suelo.y - suelo.height/2) {
 			return true;
 		}
 		return false;

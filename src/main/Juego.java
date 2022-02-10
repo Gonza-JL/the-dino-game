@@ -22,8 +22,8 @@ import javax.swing.JPanel;
 public class Juego extends JPanel {
 
 	private JFrame ventana;
-	protected static int ANCHO = 1280;
-	protected static int ALTO = 600;
+	protected final static int ANCHO = 1280;
+	protected final static int ALTO = 600;
 	protected static int velocidadCam;
 
 	private boolean juegoTerminado;
@@ -78,7 +78,7 @@ public class Juego extends JPanel {
 		msjReiniciar = new ImageIcon("data/icono de reiniciar.png").getImage();
 		cartel = new ImageIcon("data/cartel de game over.png").getImage();
 		mapa = new Mapa(0, 0, ANCHO, ALTO);
-		dino = new Dino(ANCHO - 1180, ALTO - 200, 100, 100);
+		dino = new Dino(ANCHO - 1180, 400, 100, 100);
 	}
 
 	public void actualizar() {
@@ -127,10 +127,10 @@ public class Juego extends JPanel {
 	private void mostrarPuntaje(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Pixel Emulator", 0, 20));
-		g.drawString("Puntaje: " + puntaje / 3, ANCHO - 220, ALTO - 575);
+		g.drawString("Puntaje: " + puntaje / 3, ANCHO - 220, 25);
 		if(record != null) {
 			g.setColor(Color.BLACK);
-			g.drawString("Record: " + record, ANCHO - 420, ALTO - 575);
+			g.drawString("Record: " + record, ANCHO - 420, 25);
 		}
 	}
 

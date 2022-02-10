@@ -43,8 +43,8 @@ public class Mapa {
 		suelo = new Rectangle(-1, alto - 100, ancho, alto - 500);
 		
 		obstaculos = new ArrayList<>();
-		Obstaculo o1 = new Obstaculo(ancho, alto - 200, ancho - 1220, alto - 500);
-		Obstaculo o2 = new Obstaculo(ancho + 100, alto - 150, ancho - 1250, alto - 550);
+		Obstaculo o1 = new Obstaculo(ancho, alto - 200, 60, 100);
+		Obstaculo o2 = new Obstaculo(ancho + 100, alto - 150, 30, 50);
 		o2.setTipo(2);
 		obstaculos.add(o1);
 		obstaculos.add(o2);
