@@ -249,7 +249,7 @@ modules.xml
 # Sonarlint plugin
 .idea/sonarlint
 
-### For losers ###
+### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
